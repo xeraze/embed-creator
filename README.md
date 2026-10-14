@@ -1,8 +1,8 @@
 # Embed Creator
 
-A Discord bot written in TypeScript that posts embeds from JSON files.
-Embeds live in a single folder (`data/embeds/`), all servers see the same set.
-Anyone can run their own instance with their own embeds (MIT license).
+A Discord bot written on TypeScript that posts embeds from JSON files.
+Embeds live in a single folder (`data/embeds/`).
+Anyone can run their own instance with their own embeds.
 
 ## Setup
 
@@ -29,9 +29,9 @@ Put your JSON files into `data/embeds/`. The file name (without `.json`) is the 
 ```
 data/
   embeds/
-    menu.json
-    party.json
-    rules.json
+    example1.json
+    example2.json
+    example3.json
 ```
 
 ## Commands
@@ -88,7 +88,3 @@ An `open:<name>` value opens another embed (ephemeral - only you can see it).
 ### Embed fields
 
 `title`, `description`, `color`, `fields` (`name`/`value`/`inline`), `author`, `footer`, `image`, `thumbnail`, `timestamp`.
-
-## License
-
-MIT
