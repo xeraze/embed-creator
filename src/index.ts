@@ -125,7 +125,7 @@ async function requireGuild(interaction: ChatInputCommandInteraction): Promise<b
   if (!isGuildConnected(interaction.guildId)) {
     await replyEphemeral(
       interaction,
-      "Цей сервер не підключено до системи ембедів (додайте його ID у `guilds.json`).",
+      "Цей сервер не підключено до системи ембедів.",
     );
     return false;
   }
@@ -205,7 +205,7 @@ async function sendEmbedData(
   const content = data.content || undefined;
   const channel = interaction.channel;
   if (!channel || !("send" in channel)) {
-    await replyEphemeral(interaction, "Цю команду потрібно використовувати в текстовому каналі.");
+    await replyEphemeral(interaction, "Цю команду необхідно використовувати в текстовому каналі.");
     return;
   }
   try {
@@ -219,7 +219,7 @@ async function sendEmbedData(
 
 async function buildOpenPayload(guildId: string | null | undefined, value: string) {
   if (!isGuildConnected(guildId)) {
-    return { content: "Цей сервер не підключено до системи ембедів (додайте його ID у `guilds.json`)." };
+    return { content: "Цей сервер не підключено до системи ембедів." };
   }
   if (value.startsWith("open:")) {
     const key = value.slice(5);
@@ -264,7 +264,7 @@ async function handleButton(interaction: ButtonInteraction): Promise<void> {
 async function cmdEmbed(interaction: ChatInputCommandInteraction): Promise<void> {
   if (!(await requireGuild(interaction))) return;
   if (!isAdmin(interaction)) {
-    await replyEphemeral(interaction, "У вас немає прав для цієї команди.");
+    await replyEphemeral(interaction, "У вас немає прав на використання цієї команди.");
     return;
   }
   const key = (interaction.options.getString("name") || "").trim();
@@ -294,7 +294,7 @@ async function cmdEmbedsReload(interaction: ChatInputCommandInteraction): Promis
     config.embedsReloadUsers.length > 0 &&
     !config.embedsReloadUsers.includes(String(interaction.user.id))
   ) {
-    await replyEphemeral(interaction, "У вас немає прав на використання для цієї команди.");
+    await replyEphemeral(interaction, "У вас немає прав на використання цієї команди.");
     return;
   }
   embedCache.clear();
@@ -335,7 +335,7 @@ async function cmdGuildAdd(interaction: ChatInputCommandInteraction): Promise<vo
   await replyEphemeral(
     interaction,
     `✅ Сервер \`${id}\` ${existed ? "оновлено" : "додано"}.\n` +
-      `Папка: \`data/guilds/${folder}/embeds/\` (вже створена — кладіть туди JSON)\n` +
+      `Папка: \`data/guilds/${folder}/embeds/\` (вже створена - кладіть туди JSON)\n` +
       `Роль адміна для \`/embed\`: ${adminRole ? `<@&${adminRole}>` : "з \`ADMIN_ROLE_ID\`"}`,
   );
 }
@@ -348,7 +348,7 @@ async function cmdGuildRemove(interaction: ChatInputCommandInteraction): Promise
   const id = (interaction.options.getString("id") || "").trim();
   if (removeGuild(id)) {
     embedCache.clear();
-    await replyEphemeral(interaction, `✅ Сервер \`${id}\` відключено від системи ембедів.`);
+    await replyEphemeral(interaction, `Сервер \`${id}\` відключено від системи ембедів.`);
   } else {
     await replyEphemeral(interaction, `Сервер \`${id}\` не знайдено в \`guilds.json\`.`);
   }
@@ -361,7 +361,7 @@ async function cmdGuildList(interaction: ChatInputCommandInteraction): Promise<v
   }
   const ids = listGuilds();
   if (ids.length === 0) {
-    await replyEphemeral(interaction, "`guilds.json` порожній — серверів поки немає.");
+    await replyEphemeral(interaction, "`guilds.json` порожній, серверів поки немає.");
     return;
   }
   const lines = ids.map((id) => {
@@ -396,12 +396,12 @@ function buildCommands(): RESTPostAPIChatInputApplicationCommandsJSONBody[] {
       .toJSON(),
     new SlashCommandBuilder()
       .setName("guild-add")
-      .setDescription("Підключити сервер до системи ембедів (власник бота)")
+      .setDescription("Підключити сервер до системи ембедів")
       .addStringOption((o) =>
         o.setName("id").setDescription("ID гільдії").setRequired(true),
       )
       .addStringOption((o) =>
-        o.setName("folder").setDescription("Ім'я папки (за замовчуванням = ID)").setRequired(false),
+        o.setName("folder").setDescription("Ім'я папки").setRequired(false),
       )
       .addStringOption((o) =>
         o.setName("admin_role").setDescription("ID ролі адміна для /embed на цьому сервері").setRequired(false),
@@ -409,14 +409,14 @@ function buildCommands(): RESTPostAPIChatInputApplicationCommandsJSONBody[] {
       .toJSON(),
     new SlashCommandBuilder()
       .setName("guild-remove")
-      .setDescription("Відключити сервер від системи ембедів (власник бота)")
+      .setDescription("Відключити сервер від системи ембедів")
       .addStringOption((o) =>
         o.setName("id").setDescription("ID гільдії").setRequired(true),
       )
       .toJSON(),
     new SlashCommandBuilder()
       .setName("guild-list")
-      .setDescription("Список підключених серверів (власник бота)")
+      .setDescription("Список підключених серверів")
       .toJSON(),
   ];
 }
@@ -439,7 +439,7 @@ async function registerCommands(): Promise<void> {
 }
 
 client.once(Events.ClientReady, async (c) => {
-  log("info", `Бот запущено як ${c.user.tag}`);
+  log("info", `Бота запущено як ${c.user.tag}`);
   log("info", `Підключено гільдій: ${listGuilds().length}`);
   c.user.setPresence({
     activities: [{ name: "Creating embeds", type: ActivityType.Competing }],

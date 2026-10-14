@@ -86,7 +86,7 @@ Multiple embeds in one message:
 
 ### Navigation: select menu and buttons
 
-An `open:<name>` value opens another embed (ephemeral — only you can see it). Resolution is per-guild: a guild file overrides the shared one, and `open:menu` returns to the menu.
+An `open:<name>` value opens another embed (ephemeral - only you can see it). Resolution is per-guild: a guild file overrides the shared one, and `open:menu` returns to the menu.
 
 ```json
 {
@@ -103,13 +103,9 @@ An `open:<name>` value opens another embed (ephemeral — only you can see it). 
 }
 ```
 
-- `selects` — all options go into a single select menu row, up to 25 options
-- `buttons` — `style`: `primary`/`secondary`/`success`/`danger`/`link`; `link` requires `url`, the rest run `value` (e.g. `open:about`); up to 5 buttons per row, rows go under the select menu
+- `selects` - all options go into a single select menu row, up to 25 options
+- `buttons` - `style`: `primary`/`secondary`/`success`/`danger`/`link`; `link` requires `url`, the rest run `value` (e.g. `open:about`); up to 5 buttons per row, rows go under the select menu
 
 ### Embed fields
 
 `title`, `description`, `color`, `fields` (`name`/`value`/`inline`), `author`, `footer`, `image`, `thumbnail`, `timestamp`.
-
-## License
-
-MIT
