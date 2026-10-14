@@ -294,7 +294,7 @@ async function cmdEmbedsReload(interaction: ChatInputCommandInteraction): Promis
     config.embedsReloadUsers.length > 0 &&
     !config.embedsReloadUsers.includes(String(interaction.user.id))
   ) {
-    await replyEphemeral(interaction, "У вас немає прав для цієї команди.");
+    await replyEphemeral(interaction, "У вас немає прав на використання для цієї команди.");
     return;
   }
   embedCache.clear();
