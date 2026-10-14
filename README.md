@@ -1,7 +1,8 @@
 # Embed Creator
 
-A universal Discord bot written in TypeScript: one bot — a lot of embeds for each server.
-Embeds are JSON files with a select menu and optional buttons.
+A Discord bot written in TypeScript that posts embeds from JSON files.
+Embeds live in a single folder (`data/embeds/`), all servers see the same set.
+Anyone can run their own instance with their own embeds (MIT license).
 
 ## Setup
 
@@ -11,9 +12,9 @@ Embeds are JSON files with a select menu and optional buttons.
 | Variable | Purpose |
 |---|---|
 | `TOKEN` | Bot token (required) |
-| `OWNER_ID` | Your Discord ID (only you can use `/guild-add`, `/guild-remove`, `/guild-list`) |
+| `OWNER_ID` | Your Discord ID (only you can use `/embeds-reload` if `EMBEDS_RELOAD_USERS` is set) |
 | `GUILD_ID` | Guild ID for instant command registration; empty - global (can take up to an hour) |
-| `ADMIN_ROLE_ID` | Default role for `/embed`; empty - available to everyone |
+| `ADMIN_ROLE_ID` | Role allowed to use `/embed`; empty - everyone |
 | `EMBED_FOLDER` | Data folder, defaults to `data` |
 | `EMBEDS_RELOAD_USERS` | Comma-separated user IDs allowed to use `/embeds-reload`; empty - everyone |
 
@@ -21,52 +22,29 @@ Privileged gateway intents are not required because the bot works with slash com
 
 3. `npm run build && npm start` (or `npm run dev`).
 
-## Connecting guilds
+## Embeds
 
-You don't have to edit `guilds.json` by hand - there are commands (restricted to `OWNER_ID`):
-
-| Command | What it does |
-|---|---|
-| `/guild-add id:<ID> [folder] [admin_role]` | Connects a guild: creates `data/guilds/<folder>/embeds/`; without `folder` the folder is the ID |
-| `/guild-remove id:<ID>` | Disconnects a guild |
-| `/guild-list` | List of connected guilds |
-
-`guilds.json` format (if you want to edit it by hand):
-
-```json
-{
-  "111111111111111111": "myserver",
-  "222222222222222222": { "folder": "other", "adminRole": "333333333333333333" }
-}
-```
-
-## Guild isolation
+Put your JSON files into `data/embeds/`. The file name (without `.json`) is the embed name.
 
 ```
 data/
-  embeds/                        SHARED pool: visible to all connected guilds
+  embeds/
     menu.json
-  guilds/
-    serverA/embeds/              visible only to serverA
-      welcome.json
-    serverB/embeds/              visible only to serverB
-      rules.json
+    party.json
+    rules.json
 ```
-
-An embed is looked up in its own guild folder first, then in the shared pool. Another guild's folder is never mixed in: guild A cannot open guild B's `welcome`, even knowing the file name.
 
 ## Commands
 
 | Command | What it does |
 |---|---|
 | `/embed name:<name>` | Posts an embed to the current channel (e.g. `name:menu`) |
-| `/embeds` | List of available embeds (guild + shared) |
-| `/embeds-reload` | Reloads embeds and `guilds.json` without a restart |
-| `/guild-add` `/guild-remove` `/guild-list` | Guild management (owner only) |
+| `/embeds` | List of available embeds |
+| `/embeds-reload` | Reloads embeds from files without a restart |
 
 ## JSON format
 
-The file name is the embed name. Basic shape:
+Basic shape:
 
 ```json
 {
@@ -86,7 +64,8 @@ Multiple embeds in one message:
 
 ### Navigation: select menu and buttons
 
-An `open:<name>` value opens another embed (ephemeral - only you can see it). Resolution is per-guild: a guild file overrides the shared one, and `open:menu` returns to the menu.
+An `open:<name>` value opens another embed (ephemeral - only you can see it).
+`open:menu` returns to the menu.
 
 ```json
 {
@@ -109,3 +88,7 @@ An `open:<name>` value opens another embed (ephemeral - only you can see it). Re
 ### Embed fields
 
 `title`, `description`, `color`, `fields` (`name`/`value`/`inline`), `author`, `footer`, `image`, `thumbnail`, `timestamp`.
+
+## License
+
+MIT
