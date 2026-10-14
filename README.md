@@ -1,9 +1,7 @@
 # Embed Creator
 
-![banner](https://cdn.discordapp.com/attachments/1559290752394203218/1559812425383940116/Picsart_26-10-14_06-41-57-950.png?ex=6ad07006&is=6acf1e86&hm=71e6f437361763440e4be31710c91bfbe101cde91966b5fcd8718d9c7b5a44af&)
-
-A universal Discord bot written in TypeScript: one bot — its own set of embeds for each guild.
-Embeds are JSON files with a select menu, buttons, and navigation between sections.
+A universal Discord bot written in TypeScript: one bot — a lot of embeds for each server.
+Embeds are JSON files with a select menu and optional buttons.
 
 ## Setup
 
@@ -13,19 +11,19 @@ Embeds are JSON files with a select menu, buttons, and navigation between sectio
 | Variable | Purpose |
 |---|---|
 | `TOKEN` | Bot token (required) |
-| `OWNER_ID` | Your Discord ID — only you can use `/guild-add`, `/guild-remove`, `/guild-list` |
-| `GUILD_ID` | Guild ID for instant command registration; empty — global (can take up to an hour) |
-| `ADMIN_ROLE_ID` | Default role for `/embed`; empty — available to everyone |
+| `OWNER_ID` | Your Discord ID (only you can use `/guild-add`, `/guild-remove`, `/guild-list`) |
+| `GUILD_ID` | Guild ID for instant command registration; empty - global (can take up to an hour) |
+| `ADMIN_ROLE_ID` | Default role for `/embed`; empty - available to everyone |
 | `EMBED_FOLDER` | Data folder, defaults to `data` |
-| `EMBEDS_RELOAD_USERS` | Comma-separated user IDs allowed to use `/embeds-reload`; empty — everyone |
+| `EMBEDS_RELOAD_USERS` | Comma-separated user IDs allowed to use `/embeds-reload`; empty - everyone |
 
-Privileged gateway intents are not required — the bot works with slash commands only.
+Privileged gateway intents are not required because the bot works with slash commands only.
 
 3. `npm run build && npm start` (or `npm run dev`).
 
 ## Connecting guilds
 
-You don't have to edit `guilds.json` by hand — there are commands (restricted to `OWNER_ID`):
+You don't have to edit `guilds.json` by hand - there are commands (restricted to `OWNER_ID`):
 
 | Command | What it does |
 |---|---|
@@ -46,12 +44,12 @@ You don't have to edit `guilds.json` by hand — there are commands (restricted 
 
 ```
 data/
-  embeds/                        # SHARED pool: visible to all connected guilds
+  embeds/                        SHARED pool: visible to all connected guilds
     menu.json
   guilds/
-    serverA/embeds/              # visible only to serverA
+    serverA/embeds/              visible only to serverA
       welcome.json
-    serverB/embeds/              # visible only to serverB
+    serverB/embeds/              visible only to serverB
       rules.json
 ```
 
@@ -61,8 +59,7 @@ An embed is looked up in its own guild folder first, then in the shared pool. An
 
 | Command | What it does |
 |---|---|
-| `/menu` | Posts the guild menu (select menu + buttons) |
-| `/embed name:<name>` | Posts an embed to the current channel |
+| `/embed name:<name>` | Posts an embed to the current channel (e.g. `name:menu`) |
 | `/embeds` | List of available embeds (guild + shared) |
 | `/embeds-reload` | Reloads embeds and `guilds.json` without a restart |
 | `/guild-add` `/guild-remove` `/guild-list` | Guild management (owner only) |
@@ -109,9 +106,10 @@ An `open:<name>` value opens another embed (ephemeral — only you can see it). 
 - `selects` — all options go into a single select menu row, up to 25 options
 - `buttons` — `style`: `primary`/`secondary`/`success`/`danger`/`link`; `link` requires `url`, the rest run `value` (e.g. `open:about`); up to 5 buttons per row, rows go under the select menu
 
-A ready-made demo set lives in `data/embeds/`: `menu.json` → `about.json` / `rules.json` / `info.json`,
-navigation is mutual (each section has a "← Menu" button). The texts are placeholders — replace them with your own.
-
 ### Embed fields
 
 `title`, `description`, `color`, `fields` (`name`/`value`/`inline`), `author`, `footer`, `image`, `thumbnail`, `timestamp`.
+
+## License
+
+MIT

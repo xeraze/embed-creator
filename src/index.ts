@@ -261,16 +261,6 @@ async function handleButton(interaction: ButtonInteraction): Promise<void> {
   await interaction.reply({ ...payload, flags: MessageFlags.Ephemeral }).catch(() => undefined);
 }
 
-async function cmdMenu(interaction: ChatInputCommandInteraction): Promise<void> {
-  if (!(await requireGuild(interaction))) return;
-  const data = getEmbed(interaction.guildId, "menu");
-  if (!data) {
-    await replyEphemeral(interaction, "Меню не знайдено. Додайте `menu.json` у папку ембедів.");
-    return;
-  }
-  await sendEmbedData(interaction, data, "✅ Меню опубліковано в канал.");
-}
-
 async function cmdEmbed(interaction: ChatInputCommandInteraction): Promise<void> {
   if (!(await requireGuild(interaction))) return;
   if (!isAdmin(interaction)) {
@@ -382,7 +372,6 @@ async function cmdGuildList(interaction: ChatInputCommandInteraction): Promise<v
 }
 
 const handlers: Record<string, (i: ChatInputCommandInteraction) => Promise<void>> = {
-  menu: cmdMenu,
   embed: cmdEmbed,
   embeds: cmdEmbeds,
   "embeds-reload": cmdEmbedsReload,
@@ -393,7 +382,6 @@ const handlers: Record<string, (i: ChatInputCommandInteraction) => Promise<void>
 
 function buildCommands(): RESTPostAPIChatInputApplicationCommandsJSONBody[] {
   return [
-    new SlashCommandBuilder().setName("menu").setDescription("Показати меню сервера").toJSON(),
     new SlashCommandBuilder()
       .setName("embed")
       .setDescription("Надіслати ембед у цей канал")
