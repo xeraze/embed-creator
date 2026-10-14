@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+token.env
+guilds.json
+data/embeds/
+data/guilds/
+deploy.zip
